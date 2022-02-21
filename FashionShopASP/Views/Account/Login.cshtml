@@ -1,0 +1,37 @@
+﻿@model FashionShopASP.Models.Account
+
+@{
+    ViewData["Title"] = "Login";
+}
+
+
+<h1 style="margin-left: 550px">Login</h1>
+<hr />
+<div class="row" style="margin-left: 400px">
+    <div class="col-md-6">
+        <form asp-action="Login">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Username" class="control-label"></label>
+                <input asp-for="Username" class="form-control" />
+                <span asp-validation-for="Username" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Password" class="control-label"></label>
+                <input asp-for="Password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" asp-controller="Account" asp-action="Login" class="btn btn-primary" />
+            </div>
+            <h1>@ViewBag.failed_Login_Message</h1>
+        </form>
+    </div>
+</div>
+<div style="margin-left: 600px">
+    <a asp-controller="Account" asp-action="Register">Register</a>
+</div>
+<div>
+    <a asp-controller="Home" asp-action="Index">Back to List</a>
+</div>
+

@@ -1,0 +1,114 @@
+﻿
+@model IEnumerable<FashionShopASP.Models.Product>
+
+
+<div class="top_catagory_area d-md-flex clearfix">
+    <!-- Single Catagory -->
+    <div class="single_catagory_area d-flex align-items-center bg-img" style="background-image: url(img/bg-img/bg-2.jpg);">
+        <div class="catagory-content">
+            <h6>On Accesories</h6>
+            <h2>Sale 30%</h2>
+            <a class="btn karl-btn" @Html.ActionLink("SHOP NOW", "Index", "Products")></a>
+        </div>
+    </div>
+    <!-- Single Catagory -->
+    <div class="single_catagory_area d-flex align-items-center bg-img" style="background-image: url(img/bg-img/bg-3.jpg);">
+        <div class="catagory-content">
+            <h6>in Bags excepting the new collection</h6>
+            <h2>Designer bags</h2>
+            <a class="btn karl-btn" @Html.ActionLink("SHOP NOW", "Index", "Products")></a>
+        </div>
+    </div>
+</div>
+<!-- ****** Quick View Modal Area End ****** -->
+<!-- ****** New Arrivals Area Start ****** -->
+<section class="new_arrivals_area section_padding_100_0 clearfix">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="section_heading text-center">
+                    <h2>New Arrivals</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row karl-new-arrivals">
+            @foreach (var item in Model.Take(6))
+            {
+
+                <div class="col-12 col-sm-6 col-md-4 single_gallery_item women wow fadeInUpBig" data-wow-delay="0.2s">
+                    <div class="product-img">
+                        <p><a asp-controller="ProductDetail" asp-action="index" asp-route-id="@item.Id"><img src="~/img/@item.Image" alt=""></a></p>
+
+                    </div>
+                    <div class="product-description">
+                        <h4 class="product-price">@item.Price</h4>
+                        <p><a asp-controller="ProductDetail" asp-action="index" asp-route-id="@item.Id"></a>@item.Name</p>
+                        <a href="#" class="add-to-cart-btn">ADD TO CART</a>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="section_heading text-center">
+                    <h2>Đề Xuất</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row karl-new-arrivals">
+            @foreach (var item in Model.Where(n => n.ProductTypeId == 4))
+            {
+
+                <div class="col-12 col-sm-6 col-md-4 single_gallery_item women wow fadeInUpBig" data-wow-delay="0.2s">
+                    <div class="product-img">
+                        <p><a asp-controller="ProductDetail" asp-action="index" asp-route-id="@item.Id"><img src="~/img/@item.Image" alt=""></a></p>
+
+                    </div>
+                    <div class="product-description">
+                        <h4 class="product-price">@item.Price</h4>
+                        <p><a asp-controller="ProductDetail" asp-action="index" asp-route-id="@item.Id"></a>@item.Name</p>
+                        <a href="#" class="add-to-cart-btn">ADD TO CART</a>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="section_heading text-center">
+                <h2>Giảm giá</h2>
+            </div>
+        </div>
+    </div>
+</div>
+@foreach (var item in Model.Where(n => n.Id == 3))
+{
+    <div class="offer_area height-700 section_padding_100 bg-img" style="background-image: url(img/bg-img/bg-5.jpg);">
+        <div class="container h-100">
+            <div class="row h-100 align-items-end justify-content-end">
+                <div class="col-12 col-md-8 col-lg-6">
+
+                    <div class="offer-content-area wow fadeInUp" data-wow-delay="1s">
+                        <h2>White t-shirt <span class="karl-level">Hot</span></h2>
+                        <p>* Free shipping until 25 Dec 2022</p>
+                        <div class="offer-product-price">
+                            <h3><span class="regular-price">@{ var a = item.Price + 100000;}@a</span> @item.Price</h3>
+                        </div>
+                        <div class="product-description">
+                            <p><a class="btn karl-btn mt-30" asp-controller="ProductDetail" asp-action="index" asp-route-id="@item.Id">Shop Now</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
