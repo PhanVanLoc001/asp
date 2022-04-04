@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "aogC07/Yz5WAHuyj5oQAd1x6vSJW3+QBfgiI4T6fr6XGQXvnkLvOV7tjU82Ng+slBaLVFa4W2fJxPULWgMGiDg==",
+  "dgSpecHash": "0STwAhvl3YsKxIgSK1mAtHGq8+7sty3N05jeVSD4chlmhEtZ2YNp6YE1Z0g+Y5ytDG2vzKWXFen5elr5JvSpFA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Ryuu\\source\\repos\\FashionShopASP\\FashionShopASP\\FashionShopASP.csproj",
+  "projectFilePath": "C:\\Users\\Ryuu\\source\\repos\\1\\FashionShopASP\\FashionShopASP\\FashionShopASP.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Ryuu\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\Ryuu\\.nuget\\packages\\microsoft.aspnetcore.html.abstractions\\2.2.0\\microsoft.aspnetcore.html.abstractions.2.2.0.nupkg.sha512",

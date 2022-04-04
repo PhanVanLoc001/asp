@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Http;
 
 namespace FashionShopASP.Models
 {
@@ -41,6 +43,8 @@ namespace FashionShopASP.Models
 
         [DisplayName("Ảnh đại diện")]
         public string Avatar { get; set; }
+        [NotMapped]
+        public IFormFile ImageFile { get; set; }
 
         [DisplayName("Còn hoạt động")]
         [DefaultValue(true)]

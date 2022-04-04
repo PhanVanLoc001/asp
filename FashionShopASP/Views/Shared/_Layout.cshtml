@@ -5,7 +5,7 @@
         username = ViewBag.Username;
     }
     else
-        username = "Khách";
+        username = "User";
     ViewData["Title"] = "Index";
 }
 <!DOCTYPE html>
@@ -48,24 +48,24 @@
                                     <a href="#"><img src="~/img/core-img/logo.png" alt=""></a>
                                 </div>
                                 <!-- Cart & Menu Area -->
-                                <div class="header-cart-menu d-flex align-items-center ml-auto">                       
+                                <div class="header-cart-menu d-flex align-items-center ml-auto">
                                     <div class="header-right-side-menu ml-15">
                                         <h6>@username</h6>
                                     </div>
-                                    @{ 
+                                    @{
                                         if (ViewBag.Username == null)
                                         {
-                                    <div class="header-right-side-menu ml-15">
-                                        @Html.ActionLink("Login", "Login", "Account")
-                                    </div>
+                                            <div class="header-right-side-menu ml-15">
+                                                @Html.ActionLink("Login", "Login", "Account")
+                                            </div>
                                         }
                                         else
                                         {
-                                    <div class="header-right-side-menu ml-15">
-                                        @Html.ActionLink("Logout", "Logout", "Account")
-                                    </div>
-                                            }
+                                            <div class="header-right-side-menu ml-15">
+                                                @Html.ActionLink("Logout", "Logout", "Account")
+                                            </div>
                                         }
+                                    }
                                 </div>
                             </div>
                         </div>
@@ -73,7 +73,13 @@
                     </div>
                 </div>
             </div>
-
+            <div style="margin: 0px 300px 0px 300px">
+                <form asp-controller="Products" asp-action="Search" method="get">
+                    <div class="input-group" style="max-width:300px,">
+                        <input type="text" name="keyword" class="form-control" placeholder="Nhập từ khóa...">
+                    </div>
+                </form>
+            </div>
             <!-- Top Header Area End -->
             <div class="main_header_area">
                 <div class="container h-100">
@@ -95,15 +101,8 @@
                                     <div class="collapse navbar-collapse align-items-start collapse" id="karl-navbar">
                                         <ul class="navbar-nav animated" id="nav">
                                             <li class="nav-item active"><a class="nav-link" @Html.ActionLink("Home", "Index", "Home")</a></li>
-                                            <li class="nav-item dropdown">
-                                                <a class="nav-link dropdown-toggle" href="#" id="karlDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Pages</a>
-                                                <div class="dropdown-menu" aria-labelledby="karlDropdown">
-                                                    <a class="dropdown-item" @Html.ActionLink("Home", "Index", "Home")</a>
-                                                    <a class="dropdown-item" @Html.ActionLink("Product", "Index", "Products")</a>
-                                                </div>
-                                            </li>
-                                            <li class="nav-item"><a class="nav-link" @Html.ActionLink("Cart", "Index", "Cart")</a></li>
-                                            <li class="nav-item"><a class="nav-link" href="#"><span class="karl-level">hot</span> Shoes</a></li>
+                                            <li class="nav-item"><a class="nav-link"  @Html.ActionLink("Product", "Index", "Products")</a></li>
+                                            <li class="nav-item"><a class="nav-link" @Html.ActionLink("Cart", "CartUser", "Cart")</a></li>
                                             <li class="nav-item"><a class="nav-link" href="#">Contact</a></li>
                                         </ul>
                                     </div>

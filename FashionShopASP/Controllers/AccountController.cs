@@ -171,7 +171,7 @@ namespace FashionShopASP.Controllers
             }
             ViewBag.isLogin = true;
             Account emp = _context.Account.Where(i => i.Username == username && i.Password == password).FirstOrDefault();
-            if (emp != null)
+            if (emp != null && emp.IsAdmin == false)
             {
                 //////// tạo cookie
                 //HttpContext.Response.Cookies.Append("Id", emp.Id.ToString());
@@ -180,10 +180,23 @@ namespace FashionShopASP.Controllers
 
 
                 //tạo session
+                if(emp.Status==false)
+                {
+                    ViewBag.KhoaTaiKhoan = "Tài khoản đã bị khóa";
+                    return View();
+                }
                 HttpContext.Session.SetInt32("Id", emp.Id);
                 HttpContext.Session.SetString("Username", emp.Username);
                 ViewBag.success_Login_Message = "Đăng nhập thành công";
                 return RedirectToAction("Index", "Home");
+            }
+            else
+            if(emp != null && emp.IsAdmin == true)
+            {
+                HttpContext.Session.SetInt32("Id", emp.Id);
+                HttpContext.Session.SetString("Username", emp.Username);
+                ViewBag.success_Login_Message = "Đăng nhập thành công";
+                return RedirectToAction("Index", "Admin");
             }
             else
             {

@@ -25,7 +25,7 @@
                 <div class="single_product_thumb">
                     <div id="product_details_slider" class="carousel slide" data-ride="carousel">
                         <div class="carousel-inner">
-                                    <img class="d-block w-100" src="~/img/@Model.Image" alt="First slide">
+                                    <img class="d-block w-100" src="~/img/product-img/@Model.Image" alt="First slide">
                         </div>
                     </div>
                 </div>
@@ -54,10 +54,25 @@
                     </div>
 
                     <!-- Add to Cart Form -->
+
                     <form class="cart clearfix mb-50 d-flex" method="post">
-                        <button type="submit" name="addtocart" value="5" class="btn cart-submit d-block">
-                            <a href="@Url.Action("Add","Cart",new {Id = Model.Id})"id = addtocart">Add to cart</a>
-                        </button>
+                        <div class="quantity">
+                            <span class="qty-minus" onclick="var effect = document.getElementById('qty'); var qty = effect.value; if (!isNaN(qty) & amp;&amp; qty &gt; 1 ) effect.value--;return false;"><i class="fa fa-minus" aria-hidden="true"></i></span>
+                            <input type="number" class="qty-text" id="qty2" step="1" min="1" max="12" name="quantity" value="1">
+                            <span class="qty-plus" onclick="var effect = document.getElementById('qty'); var qty = effect.value; if( !isNaN( qty )) effect.value++;return false;"><i class="fa fa-plus" aria-hidden="true"></i></span>
+                        </div>
+
+                        @if (ViewBag.Username == null)
+                        {
+                    <button type="submit" name="addtocart" value="5" class="btn cart-submit d-block">
+                        <a asp-controller="Account" asp-action="Login" id=addtocart>Add to cart</a>
+                    </button> }
+                     else
+                      {
+                      <button type="submit" name="addtocart" value="5" class="btn cart-submit d-block">
+                       <a asp-controller="Cart" asp-action="Add" asp-route-id="@Model.Id" id=addtocart>Add to cart</a>
+                       </button>
+                      }
                     </form>
 
                     <div id="accordion" role="tablist">
@@ -112,25 +127,7 @@
                                     <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Mollitia expedita quibusdam aspernatur, sapiente consectetur accusantium perspiciatis praesentium eligendi, in fugiat?</p>
                                     <a href="#">View Full Product Details</a>
                                 </div>
-                                <!-- Add to Cart Form -->
-                                <form class="cart" method="post">
-                                    <div class="quantity">
-                                        <span class="qty-minus" onclick="var effect = document.getElementById('qty'); var qty = effect.value; if( !isNaN( qty ) &amp;&amp; qty &gt; 1 ) effect.value--;return false;"><i class="fa fa-minus" aria-hidden="true"></i></span>
-
-                                        <input type="number" class="qty-text" id="qty2" step="1" min="1" max="12" name="quantity" value="1">
-
-                                        <span class="qty-plus" onclick="var effect = document.getElementById('qty'); var qty = effect.value; if( !isNaN( qty )) effect.value++;return false;"><i class="fa fa-plus" aria-hidden="true"></i></span>
-                                    </div>
-                                    <button type="submit" name="addtocart" value="5" class="cart-submit">Add to cart</button>
-                                    <!-- Wishlist -->
-                                    <div class="modal_pro_wishlist">
-                                        <a href="wishlist.html" target="_blank"><i class="ti-heart"></i></a>
-                                    </div>
-                                    <!-- Compare -->
-                                    <div class="modal_pro_compare">
-                                        <a href="compare.html" target="_blank"><i class="ti-stats-up"></i></a>
-                                    </div>
-                                </form>
+                               
 
                                 <div class="share_wf mt-30">
                                     <p>Share With Friend</p>

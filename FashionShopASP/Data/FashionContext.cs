@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using FashionShopASP.Models;
-using FashionShopASP.Areas.Admin.Models;
 
 namespace FashionShopASP.Data
 {

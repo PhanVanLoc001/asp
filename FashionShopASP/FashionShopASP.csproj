@@ -19,7 +19,10 @@
 
   <ItemGroup>
     <Folder Include="Areas\Admin\Data\" />
+    <Folder Include="Areas\Admin\Models\" />
+    <Folder Include="Areas\Admin\Views\NewFolder\" />
     <Folder Include="wwwroot\admin\" />
+    <Folder Include="wwwroot\img\account\" />
   </ItemGroup>
 
 </Project>

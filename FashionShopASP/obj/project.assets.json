@@ -7153,11 +7153,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Ryuu\\source\\repos\\FashionShopASP\\FashionShopASP\\FashionShopASP.csproj",
+      "projectUniqueName": "C:\\Users\\Ryuu\\source\\repos\\1\\FashionShopASP\\FashionShopASP\\FashionShopASP.csproj",
       "projectName": "FashionShopASP",
-      "projectPath": "C:\\Users\\Ryuu\\source\\repos\\FashionShopASP\\FashionShopASP\\FashionShopASP.csproj",
+      "projectPath": "C:\\Users\\Ryuu\\source\\repos\\1\\FashionShopASP\\FashionShopASP\\FashionShopASP.csproj",
       "packagesPath": "C:\\Users\\Ryuu\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Ryuu\\source\\repos\\FashionShopASP\\FashionShopASP\\obj\\",
+      "outputPath": "C:\\Users\\Ryuu\\source\\repos\\1\\FashionShopASP\\FashionShopASP\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Ryuu\\AppData\\Roaming\\NuGet\\NuGet.Config",

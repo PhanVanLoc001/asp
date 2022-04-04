@@ -1,0 +1,59 @@
+﻿@model IEnumerable<FashionShopASP.Models.Product>
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "Kết quả tìm kiếm";
+}
+<div class="product-big-title-area">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="product-bit-title text-center">
+                    <h2>Kết quả tìm kiếm</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--================Search Box Area =================-->
+<!--================Search Box Area =================-->
+<div class="search_box_inner" style="margin-left:200px">
+    <div class="search_box_inner">
+        <form asp-controller="Products" asp-action="Search" method="get">
+
+            <div class="input-group" style="margin-top:10px">
+                <input type="text" name="min" class="form-control" placeholder="Nhập giá ">
+                <input style="margin-top:10px" type="text" name="max" class="form-control" placeholder="Nhập giá">
+                <button style="margin-top:10px">Search</button>
+            </div>
+
+        </form>
+    </div>
+</div>
+<div class="single-product-area">
+    <div class="zigzag-bottom"></div>
+    <div class="container">
+        <div class="row">
+            @foreach (var item in Model)
+            {
+                <div class="col-12 col-sm-6 col-lg-4 single_gallery_item wow fadeInUpBig" data-wow-delay="0.5s">
+                    <div class="product-img">
+                        <p><a asp-controller="ProductDetail" asp-action="index" asp-route-id="@item.Id"><img src="~/img/@item.Image" alt=""></a></p>
+                    </div>
+                    <!-- Product Description -->
+                    <div class="product-description">
+                        <h4 class="product-price">@item.Price VNĐ</h4>
+                        <p><a asp-controller="ProductDetail" asp-action="index" asp-route-id="@item.Id">@item.Name</a></p>
+                        <!-- Add to Cart -->
+
+                        <a href="#" class="add-to-cart-btn">ADD TO CART</a>
+                    </div>
+                </div>
+            }
+
+        </div>
+    </div>
+</div>
+

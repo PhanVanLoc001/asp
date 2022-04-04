@@ -1,0 +1,30 @@
+﻿@model FashionShopASP.Models.Cart
+<div>
+    <h4>Cart</h4>
+    <h1 style="margin-left: 300px">Detail</h1>
+    <hr />
+    <dl class="row" style="margin-left: 300px">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Account)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Account.Username)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Product)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Product.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Quantity)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Quantity)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

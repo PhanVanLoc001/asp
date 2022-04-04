@@ -9,7 +9,7 @@ using FashionShopASP.Data;
 using FashionShopASP.Models;
 using Microsoft.AspNetCore.Http;
 
-namespace FashionShopASP.Controllers
+namespace _0306191373_0306191333_0306191376_0306191482.Controllers
 {
     public class CartController : Controller
     {
@@ -19,18 +19,29 @@ namespace FashionShopASP.Controllers
         {
             _context = context;
         }
-        public IActionResult Carts()
+        public async Task<IActionResult> CartUser()
+        {
+            string username = HttpContext.Session.GetString("Username");
+            ViewBag.CartsTotal = _context.Cart.Include(c => c.Product).Include(c => c.Account)
+                                .Where(c => c.Account.Username == username)
+                                .Sum(c => c.Quantity * c.Product.Price);
+            int id = _context.Account.FirstOrDefault(acc => acc.Username == username).Id;
+            if (HttpContext.Session.Keys.Contains("Username"))
+            {
+                ViewBag.UserName = username;
+            }
+            if (HttpContext.Session.Keys.Contains("id"))
+            {
+                ViewBag.id = HttpContext.Session.GetInt32("id");
+            }
+
+            var shopContext = _context.Cart.Include(c => c.Account).Include(c => c.Product).Where(i => i.AccountId == id);
+            return View(await shopContext.ToListAsync());
+        }
+        public IActionResult Pay()
         {
             Invoice invoice = new Invoice();
             string username = HttpContext.Session.GetString("Username");
-            if (!checkStock(username))
-            {
-                ViewBag.ErrorMessage = "Có Sản Phẩm Hết Hàng!";
-                ViewBag.Account = _context.Account.Where(c => c.Username == username).FirstOrDefault();
-                ViewBag.CartsTotal = _context.Cart.Include(c => c.Product).Include(c => c.Account)
-                                .Where(c => c.Account.Username == username)
-                                .Sum(c => c.Quantity * c.Product.Price);
-            }
             Account acc = _context.Account.FirstOrDefault(c => c.Username == username);
             //Hoa don
             DateTime now = DateTime.Now;
@@ -45,9 +56,9 @@ namespace FashionShopASP.Controllers
             _context.Add(invoice);
             _context.SaveChanges();
             //Chi Tiet Hoa Don
-            List<Cart> carts = _context.Cart.Include(c => c.Product).Include(c => c.Account)
+            List<Cart> Cart = _context.Cart.Include(c => c.Product).Include(c => c.Account)
                              .Where(c => c.Account.Username == username).ToList();
-            foreach (Cart item in carts)
+            foreach (Cart item in Cart)
             {
                 InvoiceDetail invoiceDetail = new InvoiceDetail();
                 invoiceDetail.InvoiceId = invoice.Id;
@@ -57,98 +68,14 @@ namespace FashionShopASP.Controllers
                 _context.Add(invoiceDetail);
             }
             _context.SaveChanges();
-            foreach (Cart c in carts)
+            foreach (Cart c in Cart)
             {
                 c.Product.Stock -= c.Quantity;
                 _context.Cart.Remove(c);
             }
             _context.SaveChanges();
-            return RedirectToAction("Carts", "Cart");
+            return RedirectToAction("CartUser", "Cart");
         }
-        public IActionResult clearCart()
-        {
-            string username = HttpContext.Session.GetString("Username");
-            List<Cart> carts = _context.Cart.Include(c => c.Product).Include(c => c.Account)
-                             .Where(c => c.Account.Username == username).ToList();
-            foreach (Cart c in carts)
-            {
-                _context.Cart.Remove(c);
-            }
-            _context.SaveChanges();
-            return RedirectToAction(nameof(Carts));
-        }
-        public IActionResult Tang(int id)
-        {
-            string username = HttpContext.Session.GetString("Username");
-            int ids = _context.Account.FirstOrDefault(c => c.Username == username).Id;
-            Cart cart = _context.Cart.FirstOrDefault(c => c.Id == id && c.AccountId == ids);
-            cart.Quantity += 1;
-            _context.SaveChanges();
-            return RedirectToAction("Carts", "Cart");
-        }
-        public IActionResult Giam(int id)
-        {
-            string username = HttpContext.Session.GetString("Username");
-            int ids = _context.Account.FirstOrDefault(c => c.Username == username).Id;
-            Cart cart = _context.Cart.FirstOrDefault(c => c.Id == id && c.AccountId == ids);
-            if (cart.Quantity == 1)
-            {
-                cart.Quantity = 1;
-            }
-            else
-            {
-                cart.Quantity -= 1;
-            }
-            _context.SaveChanges();
-            return RedirectToAction("Carts", "Cart");
-        }
-        // GET: Carts
-        public async Task<IActionResult> Index()
-        {
-            var shopContext = _context.Cart.Include(c => c.Account).Include(c => c.Product);
-            return View(await shopContext.ToListAsync());
-        }
-        public async Task<IActionResult> CartUser()
-        {
-            string username = HttpContext.Session.GetString("Username");
-            ViewBag.CartsTotal = _context.Cart.Include(c => c.Product).Include(c => c.Account)
-                                .Where(c => c.Account.Username == username)
-                                .Sum(c => c.Quantity * c.Product.Price);
-            var id = HttpContext.Session.GetInt32("id");
-            if (HttpContext.Session.Keys.Contains("Username"))
-            {
-                ViewBag.UserName = username;
-            }
-            if (HttpContext.Session.Keys.Contains("id"))
-            {
-                ViewBag.id = HttpContext.Session.GetInt32("id");
-            }
-
-            var shopContext = _context.Cart.Include(c => c.Account).Include(c => c.Product).Where(i => i.AccountId == id);
-            return View(await shopContext.ToListAsync());
-        }
-
-        // GET: Carts/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var cart = await _context.Cart
-                .Include(c => c.Account)
-                .Include(c => c.Product)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (cart == null)
-            {
-                return NotFound();
-            }
-
-            return View(cart);
-        }
-
-        //thêm giỏ hàng
         public IActionResult Add(int id)
         {
             return Add(id, 1);
@@ -175,22 +102,73 @@ namespace FashionShopASP.Controllers
             }
             _context.SaveChanges();
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(CartUser));
         }
-        private bool checkStock(string username)
+        public IActionResult Tang(int id)
         {
-            List<Cart> cart = _context.Cart.Include(c => c.Product).Include(c => c.Account).Where(c => c.Account.Username == username).ToList();
-            foreach (Cart c in cart)
-            {
-                if (c.Product.Stock < c.Quantity)
-                {
-                    return false;
-                }
-            }
-            return true;
+            string username = HttpContext.Session.GetString("Username");
+            int ids = _context.Account.FirstOrDefault(c => c.Username == username).Id;
+            Cart cart = _context.Cart.FirstOrDefault(c => c.Id == id && c.AccountId == ids);
+            cart.Quantity += 1;
+            _context.SaveChanges();
+            return RedirectToAction("CartUser", "Cart");
         }
-        //<<<end thanh toán
-        // GET: Carts/Create
+        public IActionResult Giam(int id)
+        {
+            string username = HttpContext.Session.GetString("Username");
+            int ids = _context.Account.FirstOrDefault(c => c.Username == username).Id;
+            Cart cart = _context.Cart.FirstOrDefault(c => c.Id == id && c.AccountId == ids);
+            if (cart.Quantity == 1)
+            {
+                cart.Quantity = 1;
+            }
+            else
+            {
+                cart.Quantity -= 1;
+            }
+            _context.SaveChanges();
+            return RedirectToAction("CartUser", "Cart");
+        }
+        public IActionResult clearCart()
+        {
+            string username = HttpContext.Session.GetString("Username");
+            List<Cart> Cart = _context.Cart.Include(c => c.Product).Include(c => c.Account)
+                             .Where(c => c.Account.Username == username).ToList();
+            foreach (Cart c in Cart)
+            {
+                _context.Cart.Remove(c);
+            }
+            _context.SaveChanges();
+            return RedirectToAction(nameof(CartUser));
+        }
+        // GET: Cart
+        public async Task<IActionResult> Index()
+        {
+            var shopContext = _context.Cart.Include(c => c.Account).Include(c => c.Product);
+            return View(await shopContext.ToListAsync());
+        }
+
+        // GET: Cart/Details/5
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var cart = await _context.Cart
+                .Include(c => c.Account)
+                .Include(c => c.Product)
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (cart == null)
+            {
+                return NotFound();
+            }
+
+            return View(cart);
+        }
+
+        // GET: Cart/Create
         public IActionResult Create()
         {
             ViewData["AccountId"] = new SelectList(_context.Account, "id", "Username");
@@ -198,9 +176,12 @@ namespace FashionShopASP.Controllers
             return View();
         }
 
-        // POST: Carts/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        //thêm giỏ hàng
+
+        //giỏ hàng
+        // POST: Cart/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,AccountId,ProductId,Quantity")] Cart cart)
@@ -216,7 +197,7 @@ namespace FashionShopASP.Controllers
             return View(cart);
         }
 
-        // GET: Carts/Edit/5
+        // GET: Cart/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -234,9 +215,9 @@ namespace FashionShopASP.Controllers
             return View(cart);
         }
 
-        // POST: Carts/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: Cart/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,AccountId,ProductId,Quantity")] Cart cart)
@@ -264,47 +245,14 @@ namespace FashionShopASP.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Carts));
+                return RedirectToAction(nameof(Index));
             }
             ViewData["AccountId"] = new SelectList(_context.Account, "id", "Username", cart.AccountId);
             ViewData["ProductId"] = new SelectList(_context.Product, "Id", "Name", cart.ProductId);
             return View(cart);
         }
 
-        // GET: Carts/Delete/5
-        public async Task<IActionResult> DeleteUser(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var cart = await _context.Cart
-                .Include(c => c.Account)
-                .Include(c => c.Product)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (cart == null)
-            {
-                return NotFound();
-            }
-
-            return View(cart);
-        }
-
-        // POST: Carts/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteUserConfirmed(int id)
-        {
-            var cart = await _context.Cart.FindAsync(id);
-            _context.Cart.Remove(cart);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Carts));
-        }
-
-
-
-
+        // GET: Cart/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -324,11 +272,7 @@ namespace FashionShopASP.Controllers
             return View(cart);
         }
 
-
-
-
-
-        // POST: Carts/Delete/5
+        // POST: Cart/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -338,9 +282,6 @@ namespace FashionShopASP.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-
-
-
 
         private bool CartExists(int id)
         {

@@ -1,0 +1,84 @@
+﻿@model IEnumerable<FashionShopASP.Models.Cart>
+@{
+    ViewData["Title"] = "Home Page";
+    string username = "anonymous";
+    if (ViewBag.UserName != null)
+    {
+        username = ViewBag.UserName;
+    }
+}
+<div class="col-sm-2"></div>
+<div class="col-sm-10">
+    <div class="column" style="width:50%">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Sản phẩm
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Product.Image)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Product.SKU)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Product.Name)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Quantity)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Product.Price)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var item in Model)
+                {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Product.Id)
+                    </td>
+                    <td>
+                        <img src="~/img/product-img/@item.Product.Image" alt="Computer Man" style="width:72px;height:72px;">
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Product.SKU)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Product.Name)
+                    </td>
+                    <td>
+                        <div class="buttons_added">
+                            <a asp-action="Giam" asp-route-id="@item.Id" class="minus is-form" type="button" value="-"></a>
+                            <input value="@Html.DisplayFor(modelItem => item.Quantity)">
+                            <a asp-action="Tang" asp-route-id="@item.Id" class="plus is-form" type="button" value="+"></a>
+                        </div>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Product.Price)
+                    </td>
+                    <td>
+                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="mb-3">Tổng Tiền: @ViewBag.CartsTotal.ToString("#,##0") VND</div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary "><a asp-controller="Carts" asp-action="Pay">Pay</a></button>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary "><a asp-controller="Carts" asp-action="clearCart">Clear</a></button>
+            </div>
+        </div>
+    </div>
+</div>

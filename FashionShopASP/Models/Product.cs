@@ -1,7 +1,9 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -40,6 +42,8 @@ namespace FashionShopASP.Models
 
         [DisplayName("Ảnh minh họa")]
         public string Image { get; set; }
+        [NotMapped]
+        public IFormFile ImageFile { get; set; }
 
 
         [DisplayName("Còn hiệu lực")]
@@ -51,5 +55,6 @@ namespace FashionShopASP.Models
 
         // Collection reference property cho khóa ngoại từ InvoiceDetail
         public List<InvoiceDetail> InvoiceDetails { get; set; }
+        
     }
 }
